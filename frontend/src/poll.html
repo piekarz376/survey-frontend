@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Survey Feedback</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      max-width: 800px;
+    }
+    .question {
+      margin-bottom: 20px;
+    }
+    .question label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+    input[type="range"] {
+      width: 100%;
+    }
+    input[type="text"],
+    textarea {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+      box-sizing: border-box;
+    }
+    button {
+      padding: 10px 20px;
+      margin-top: 20px;
+      font-size: 16px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Survey Feedback</h1>
+  <form id="surveyForm">
+    <!-- Closed Questions -->
+    <div class="question">
+      <label for="overall_satisfaction">Overall Satisfaction (1-10)</label>
+      <input type="range" id="overall_satisfaction" name="overall_satisfaction" min="1" max="10" value="5"
+             oninput="document.getElementById('overall_satisfaction_value').innerText=this.value">
+      <span id="overall_satisfaction_value">5</span>
+    </div>
+    
+    <div class="question">
+      <label for="story_interest">Story Interest (1-10)</label>
+      <input type="range" id="story_interest" name="story_interest" min="1" max="10" value="5"
+             oninput="document.getElementById('story_interest_value').innerText=this.value">
+      <span id="story_interest_value">5</span>
+    </div>
+    
+    <div class="question">
+      <label for="dm_character_performance">DM's Character Performance (1-10)</label>
+      <input type="range" id="dm_character_performance" name="dm_character_performance" min="1" max="10" value="5"
+             oninput="document.getElementById('dm_character_performance_value').innerText=this.value">
+      <span id="dm_character_performance_value">5</span>
+    </div>
+    
+    <div class="question">
+      <label for="character_diversity">Character Diversity (1-10)</label>
+      <input type="range" id="character_diversity" name="character_diversity" min="1" max="10" value="5"
+             oninput="document.getElementById('character_diversity_value').innerText=this.value">
+      <span id="character_diversity_value">5</span>
+    </div>
+    
+    <!-- Open Questions -->
+    <div class="question">
+      <label for="favorite_npc">Favorite NPC</label>
+      <input type="text" id="favorite_npc" name="favorite_npc" placeholder="Enter your favorite NPC">
+    </div>
+    
+    <div class="question">
+      <label for="least_favorite_npc">Least Favorite NPC</label>
+      <input type="text" id="least_favorite_npc" name="least_favorite_npc" placeholder="Enter your least favorite NPC">
+    </div>
+    
+    <div class="question">
+      <label for="favorite_scene">Favorite Scene</label>
+      <input type="text" id="favorite_scene" name="favorite_scene" placeholder="Describe your favorite scene">
+    </div>
+    
+    <div class="question">
+      <label for="worst_scene">Worst Scene</label>
+      <input type="text" id="worst_scene" name="worst_scene" placeholder="Describe the worst scene">
+    </div>
+    
+    <div class="question">
+      <label for="improved_since_last">What improved since the last survey?</label>
+      <textarea id="improved_since_last" name="improved_since_last" rows="3" placeholder="Describe what has improved"></textarea>
+    </div>
+    
+    <div class="question">
+      <label for="worsened_since_last">What worsened since the last survey? (not asking about frequency)</label>
+      <textarea id="worsened_since_last" name="worsened_since_last" rows="3" placeholder="Describe what has worsened"></textarea>
+    </div>
+    
+    <div class="question">
+      <label for="additional_feedback">Additional Feedback</label>
+      <textarea id="additional_feedback" name="additional_feedback" rows="3" placeholder="Any additional comments"></textarea>
+    </div>
+    
+    <button type="submit">Submit Feedback</button>
+  </form>
+  
+  <script>
+    // Listen for form submission
+    document.getElementById('surveyForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      
+      // Gather form data into an object
+      const data = {
+        overall_satisfaction: document.getElementById('overall_satisfaction').value,
+        story_interest: document.getElementById('story_interest').value,
+        dm_character_performance: document.getElementById('dm_character_performance').value,
+        character_diversity: document.getElementById('character_diversity').value,
+        favorite_npc: document.getElementById('favorite_npc').value,
+        least_favorite_npc: document.getElementById('least_favorite_npc').value,
+        favorite_scene: document.getElementById('favorite_scene').value,
+        worst_scene: document.getElementById('worst_scene').value,
+        improved_since_last: document.getElementById('improved_since_last').value,
+        worsened_since_last: document.getElementById('worsened_since_last').value,
+        additional_feedback: document.getElementById('additional_feedback').value,
+        timestamp: new Date().toISOString()
+      };
+      
+      try {
+        // Post the data to the API endpoint
+        const response = await fetch('http://homelabpiekarski.top/api/submit', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+        });
+        
+        if (response.ok) {
+          alert('Thank you for your feedback!');
+          document.getElementById('surveyForm').reset();
+          // Reset slider displays to default (5)
+          document.getElementById('overall_satisfaction_value').innerText = '5';
+          document.getElementById('story_interest_value').innerText = '5';
+          document.getElementById('dm_character_performance_value').innerText = '5';
+          document.getElementById('character_diversity_value').innerText = '5';
+        } else {
+          alert('Submission failed. Please try again.');
+        }
+      } catch (error) {
+        console.error(error);
+        alert('An error occurred while submitting your feedback.');
+      }
+    });
+  </script>
+</body>
+</html>
