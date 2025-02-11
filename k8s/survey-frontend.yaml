@@ -46,17 +46,19 @@ metadata:
   name: survey-frontend-ingress
   annotations:
     kubernetes.io/ingress.class: "nginx"
-    nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/use-regex: "true"
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
 spec:
   ingressClassName: nginx
   rules:
   - host: poll.homelabpiekarski.top
     http:
       paths:
-      - path: /poll
-        pathType: Prefix
+      - path: /poll(/|$)(.*)
+        pathType: ImplementationSpecific
         backend:
           service:
             name: survey-frontend-service
             port:
               number: 800
+
