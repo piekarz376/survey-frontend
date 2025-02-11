@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: survey-frontend
-        image: piekarz376/survey-frontedn:0.1.0
+        image: piekarz376/survey-frontend:0.1.0
         ports:
         - containerPort: 80
 
