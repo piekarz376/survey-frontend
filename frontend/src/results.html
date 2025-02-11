@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Survey Results</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      max-width: 800px;
+    }
+    h1, h2 {
+      text-align: center;
+    }
+    .summary, .submission {
+      margin-bottom: 20px;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    .submission {
+      background-color: #f9f9f9;
+    }
+    .submission p {
+      margin: 5px 0;
+    }
+  </style>
+</head>
+<body>
+  <h1>Survey Results</h1>
+  <div id="summary" class="summary">
+    <!-- Aggregated summary will be loaded here -->
+  </div>
+  <div id="submissions">
+    <!-- Individual submissions will be listed here -->
+  </div>
+
+  <script>
+    async function loadResults() {
+      try {
+        // Fetch the aggregated results from the API
+        const response = await fetch('http://homelabpiekarski.top/api/result');
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        const data = await response.json();
+        
+        // Build and display the summary section
+        let summaryHtml = '<h2>Survey Summary</h2>';
+        summaryHtml += `<p><strong>Total Submissions:</strong> ${data.total_submissions}</p>`;
+        summaryHtml += `<p><strong>Average Overall Satisfaction:</strong> ${data.average_overall_satisfaction ? data.average_overall_satisfaction.toFixed(2) : 'N/A'}</p>`;
+        document.getElementById('summary').innerHTML = summaryHtml;
+        
+        // Build and display the list of individual submissions
+        let submissionsHtml = '<h2>All Submissions</h2>';
+        if (data.responses && data.responses.length > 0) {
+          data.responses.forEach((submission, index) => {
+            submissionsHtml += `<div class="submission">`;
+            submissionsHtml += `<h3>Submission ${index + 1}</h3>`;
+            submissionsHtml += `<p><strong>Overall Satisfaction:</strong> ${submission.overall_satisfaction}</p>`;
+            submissionsHtml += `<p><strong>Story Interest:</strong> ${submission.story_interest}</p>`;
+            submissionsHtml += `<p><strong>DM's Character Performance:</strong> ${submission.dm_character_performance}</p>`;
+            submissionsHtml += `<p><strong>Character Diversity:</strong> ${submission.character_diversity}</p>`;
+            submissionsHtml += `<p><strong>Favorite NPC:</strong> ${submission.favorite_npc || 'N/A'}</p>`;
+            su
