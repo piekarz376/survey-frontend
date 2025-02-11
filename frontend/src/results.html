@@ -62,4 +62,27 @@
             submissionsHtml += `<p><strong>DM's Character Performance:</strong> ${submission.dm_character_performance}</p>`;
             submissionsHtml += `<p><strong>Character Diversity:</strong> ${submission.character_diversity}</p>`;
             submissionsHtml += `<p><strong>Favorite NPC:</strong> ${submission.favorite_npc || 'N/A'}</p>`;
-            su
+            submissionsHtml += `<p><strong>Least Favorite NPC:</strong> ${submission.least_favorite_npc || 'N/A'}</p>`;
+            submissionsHtml += `<p><strong>Favorite Scene:</strong> ${submission.favorite_scene || 'N/A'}</p>`;
+            submissionsHtml += `<p><strong>Worst Scene:</strong> ${submission.worst_scene || 'N/A'}</p>`;
+            submissionsHtml += `<p><strong>Improved Since Last Survey:</strong> ${submission.improved_since_last || 'N/A'}</p>`;
+            submissionsHtml += `<p><strong>Worsened Since Last Survey:</strong> ${submission.worsened_since_last || 'N/A'}</p>`;
+            submissionsHtml += `<p><strong>Additional Feedback:</strong> ${submission.additional_feedback || 'N/A'}</p>`;
+            submissionsHtml += `<p><small>Submitted at: ${submission.timestamp}</small></p>`;
+            submissionsHtml += `</div>`;
+          });
+        } else {
+          submissionsHtml += `<p>No submissions available.</p>`;
+        }
+        document.getElementById('submissions').innerHTML = submissionsHtml;
+      } catch (error) {
+        console.error('Error loading results:', error);
+        document.getElementById('summary').innerHTML = '<p>Error loading results. Please try again later.</p>';
+      }
+    }
+    
+    // Load results once the page has fully loaded
+    window.onload = loadResults;
+  </script>
+</body>
+</html>
