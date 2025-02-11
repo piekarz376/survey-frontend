@@ -53,7 +53,7 @@ spec:
   - host: poll.homelabpiekarski.top
     http:
       paths:
-      - path: /
+      - path: /poll
         pathType: Prefix
         backend:
           service:
