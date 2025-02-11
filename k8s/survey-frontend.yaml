@@ -1,0 +1,60 @@
+# k8s/frontend-deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: survey-frontend
+  labels:
+    app: survey-frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: survey-frontend
+  template:
+    metadata:
+      labels:
+        app: survey-frontend
+    spec:
+      containers:
+      - name: survey-frontend
+        image: piekarz376/homelabpiekarski.top:latest
+        ports:
+        - containerPort: 80
+
+---
+
+# k8s/frontend-service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: survey-frontend-service
+spec:
+  selector:
+    app: survey-frontend
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+  type: ClusterIP
+
+---
+
+# k8s/ingress.yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: survey-frontend-ingress
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+spec:
+  rules:
+  - host: homelabpiekarski.top
+    http:
+      paths:
+      - path: /poll
+        pathType: Prefix
+        backend:
+          service:
+            name: survey-frontend-service
+            port:
+              number: 80
