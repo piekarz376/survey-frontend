@@ -59,4 +59,4 @@ spec:
           service:
             name: survey-frontend-service
             port:
-              number: 80
+              number: 800
