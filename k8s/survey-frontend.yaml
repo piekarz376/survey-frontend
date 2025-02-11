@@ -35,7 +35,6 @@ spec:
     - protocol: TCP
       port: 800
       targetPort: 80
-  type: ClusterIP
 
 ---
 
