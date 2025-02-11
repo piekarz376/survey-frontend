@@ -33,7 +33,7 @@ spec:
     app: survey-frontend
   ports:
     - protocol: TCP
-      port: 8888
+      port: 80
       targetPort: 80
 
 ---
@@ -59,6 +59,6 @@ spec:
           service:
             name: survey-frontend-service
             port:
-              number: 8888
+              number: 80
 
 
